@@ -2,6 +2,8 @@ package net.brifboy.levelup.service;
 
 import net.brifboy.levelup.model.Guild;
 import net.brifboy.levelup.repo.GuildRepository;
+import net.brifboy.levelup.repo.UserDBInteraction;
+import net.brifboy.levelup.repo.UserRepository;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -16,6 +18,11 @@ public class GuildSettup extends ListenerAdapter {
 
     @Autowired
     private GuildRepository guildrepo;
+    @Autowired
+    UserDBInteraction userDBInteraction;
+
+    @Autowired
+    private UserRepository userrepo;
 
     private static final Logger logger = LoggerFactory.getLogger(GuildSettup.class);
     @Override
@@ -36,8 +43,10 @@ public class GuildSettup extends ListenerAdapter {
     public void onGuildLeave(@NotNull GuildLeaveEvent event) {
         guildrepo.findById(event.getGuild().getIdLong())
                 .ifPresent(guildDB -> {
+                    userDBInteraction.deleteUsers(
+                            userrepo.getUsersByGuildId(guildDB.getGuildid()));
                     guildrepo.delete(guildDB);
-                    logger.info("Deleted Guild {}, {} to DB", guildDB.getGuildid(), guildDB.getName());
+                    logger.info("Deleted Guild {}, {}, from DB", guildDB.getGuildid(), guildDB.getName());
 
                 });
 

@@ -8,19 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class LevelUpApplication {
-	 @Autowired
-	private LevelUPConfiguration levelup;
-
-	private static Logger logger = LoggerFactory.getLogger(LevelUpApplication.class);
 
 	public static void main(String[] args) {
 		SpringApplication.run(LevelUpApplication.class, args);
-
-
-
-
-
-
 
 	}
 
