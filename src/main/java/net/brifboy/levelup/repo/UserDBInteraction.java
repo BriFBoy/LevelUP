@@ -11,9 +11,18 @@ public class UserDBInteraction {
 
     @Autowired
     UserRepository userRepository;
+
     public void deleteUsers(List<User> users) {
-
         userRepository.deleteAll(users);
+    }
 
+    public void saveUser(User user) {
+        userRepository.save(user);
+    }
+    public User getUserFormIdAndGuildId(long userid, long guildid) {
+       return userRepository.getUserFromIdAndGuildId(userid, guildid);
+    }
+    public List<User> getUsersFromGuildId(long guildid) {
+        return userRepository.getUsersByGuildId(guildid);
     }
 }

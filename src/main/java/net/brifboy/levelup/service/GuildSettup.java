@@ -1,9 +1,8 @@
 package net.brifboy.levelup.service;
 
 import net.brifboy.levelup.model.Guild;
-import net.brifboy.levelup.repo.GuildRepository;
+import net.brifboy.levelup.repo.GuildDBInteractions;
 import net.brifboy.levelup.repo.UserDBInteraction;
-import net.brifboy.levelup.repo.UserRepository;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -17,22 +16,20 @@ import org.springframework.stereotype.Service;
 public class GuildSettup extends ListenerAdapter {
 
     @Autowired
-    private GuildRepository guildrepo;
+    private GuildDBInteractions guildDBInteractions;
     @Autowired
-    UserDBInteraction userDBInteraction;
+    private UserDBInteraction userDBInteraction;
 
-    @Autowired
-    private UserRepository userrepo;
 
     private static final Logger logger = LoggerFactory.getLogger(GuildSettup.class);
     @Override
     public void onGuildJoin(@NotNull GuildJoinEvent event) {
 
         Guild guild = new Guild(event.getGuild().getIdLong(), event.getGuild().getName());
-        Guild guildDB = guildrepo.findById(event.getGuild().getIdLong()).orElse(null);
+        Guild guildDB = guildDBInteractions.findById(event.getGuild().getIdLong());
 
         if (guildDB == null) {
-            guildrepo.save(guild);
+            guildDBInteractions.saveGuild(guild);
             logger.info("Saved Guild {}, {} to DB", guild.getGuildid(), guild.getName());
         } else {
             logger.warn("Guild {}, {}, was already in DB when joining", guild.getGuildid(), guild.getName());
@@ -41,14 +38,11 @@ public class GuildSettup extends ListenerAdapter {
 
     @Override
     public void onGuildLeave(@NotNull GuildLeaveEvent event) {
-        guildrepo.findById(event.getGuild().getIdLong())
-                .ifPresent(guildDB -> {
-                    userDBInteraction.deleteUsers(
-                            userrepo.getUsersByGuildId(guildDB.getGuildid()));
-                    guildrepo.delete(guildDB);
-                    logger.info("Deleted Guild {}, {}, from DB", guildDB.getGuildid(), guildDB.getName());
-
-                });
+        Guild guild = guildDBInteractions.findById(event.getGuild().getIdLong());
+        if (guild != null) {
+            userDBInteraction.deleteUsers(userDBInteraction.getUsersFromGuildId(guild.getGuildid()));
+            guildDBInteractions.deleteGuild(guild);
+        }
 
     }
 }
