@@ -5,12 +5,17 @@ import net.brifboy.levelup.service.GuildSettup;
 import net.brifboy.levelup.service.UserGetXp;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.interactions.commands.Command;
+import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -23,6 +28,7 @@ public class LevelUPConfiguration {
     @Autowired
     private final UserGetXp userGetXp;
 
+
     public LevelUPConfiguration(GuildSettup guildSettup, UserGetXp userGetXp) {
         this.guildSettup = guildSettup;
         this.userGetXp = userGetXp;
@@ -31,10 +37,15 @@ public class LevelUPConfiguration {
 
     @Bean
     public JDA jda() {
-        return JDABuilder.create(DISCORDTOKEN, getGatewayIntent())
+        JDA jda = JDABuilder.create(DISCORDTOKEN, getGatewayIntent())
                 .addEventListeners(guildSettup)
                 .addEventListeners(userGetXp)
+                .disableCache(CacheFlag.VOICE_STATE, CacheFlag.SCHEDULED_EVENTS)
                 .build();
+        jda.updateCommands()
+                .addCommands(net.dv8tion.jda.api.interactions.commands.build.Commands.slash("levelstat", "See stats for the levels")
+                        .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.MESSAGE_SEND)));
+        return jda;
     }
     private static List<GatewayIntent> getGatewayIntent() {
         return List.of(

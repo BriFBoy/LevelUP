@@ -29,11 +29,14 @@ public class User {
 
     public User() {}
 
-    public void checkLevel(UserClaclulations claclulations) {
-        claclulations.checkUserLevelUp(this);
+    public boolean checkLevel(UserClaclulations claclulations) {
+       return claclulations.checkUserLevelUp(this);
     }
     public void addXp(UserClaclulations claclulations, String[] words) {
         claclulations.addXp(this, words);
     }
 
+    public long getUserid() {
+        return userid;
+    }
 }

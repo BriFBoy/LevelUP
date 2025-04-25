@@ -9,21 +9,22 @@ import org.springframework.stereotype.Service;
 public class UserClaclulations {
     Logger logger = LoggerFactory.getLogger(UserClaclulations.class);
 
-    public User checkUserLevelUp(User user) {
+    public boolean checkUserLevelUp(User user) {
         try {
             final int XPTOLEVELUP = ((int) (Math.pow(user.level, 1.4) + 20));
             if (user.xp >= XPTOLEVELUP) {
                 user.level++;
                 user.xp = 0;
+                return true;
             }
+
         } catch (ClassCastException c) {
             logger.info("Failed to cast XPTOLEVELUP to int");
         }
-        return user;
+        return false;
     }
-    public User addXp(User user, String[] XP) {
+    public void addXp(User user, String[] XP) {
         user.xp += XP.length;
-        return user;
     }
 
 }

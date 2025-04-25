@@ -12,14 +12,19 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserGetXp extends ListenerAdapter {
-    @Autowired
+
     GuildDBInteractions guildDBInteractions;
-
-    @Autowired
     UserDBInteraction userDBInteraction;
+    UserClaclulations claclulations;
+    MessageSending messageSending;
 
     @Autowired
-    UserClaclulations claclulations;
+    public UserGetXp(GuildDBInteractions guildDBInteractions, UserDBInteraction userDBInteraction, UserClaclulations claclulations, MessageSending messageSending) {
+        this.guildDBInteractions = guildDBInteractions;
+        this.userDBInteraction = userDBInteraction;
+        this.claclulations = claclulations;
+        this.messageSending = messageSending;
+    }
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
@@ -34,7 +39,9 @@ public class UserGetXp extends ListenerAdapter {
 
         if (user != null) {
             user.addXp(claclulations, XP);
-            user.checkLevel(claclulations);
+            if (user.checkLevel(claclulations)) {
+                messageSending.sendLevelupMessage(user, event.getChannel());
+            }
             userDBInteraction.saveUser(user);
 
         } else {
