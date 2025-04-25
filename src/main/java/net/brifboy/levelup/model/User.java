@@ -39,4 +39,8 @@ public class User {
     public long getUserid() {
         return userid;
     }
+
+    public String getUsername() {
+        return username;
+    }
 }

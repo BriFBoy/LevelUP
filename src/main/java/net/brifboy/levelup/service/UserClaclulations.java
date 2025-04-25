@@ -11,20 +11,26 @@ public class UserClaclulations {
 
     public boolean checkUserLevelUp(User user) {
         try {
-            final int XPTOLEVELUP = ((int) (Math.pow(user.level, 1.4) + 20));
+            final int XPTOLEVELUP = getXptolevelup(user);
             if (user.xp >= XPTOLEVELUP) {
                 user.level++;
                 user.xp = 0;
                 return true;
             }
-
         } catch (ClassCastException c) {
             logger.info("Failed to cast XPTOLEVELUP to int");
         }
         return false;
     }
+
+
+
     public void addXp(User user, String[] XP) {
         user.xp += XP.length;
+    }
+
+    public int getXptolevelup(User user) {
+        return (int) (Math.pow(user.level, 1.6) + 25);
     }
 
 }
