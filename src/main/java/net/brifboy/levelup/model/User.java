@@ -1,6 +1,7 @@
 package net.brifboy.levelup.model;
 
 import jakarta.persistence.*;
+import net.brifboy.levelup.service.UserClaclulations;
 
 @Entity(name = "Users")
 public class User {
@@ -27,5 +28,12 @@ public class User {
     }
 
     public User() {}
+
+    public void checkLevel(UserClaclulations claclulations) {
+        claclulations.checkUserLevelUp(this);
+    }
+    public void addXp(UserClaclulations claclulations, String[] words) {
+        claclulations.addXp(this, words);
+    }
 
 }

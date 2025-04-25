@@ -19,7 +19,7 @@ public class UserDBInteraction {
     public void saveUser(User user) {
         userRepository.save(user);
     }
-    public User getUserFormIdAndGuildId(long userid, long guildid) {
+    public User getUserFormUserIdAndGuildId(long userid, long guildid) {
        return userRepository.getUserFromIdAndGuildId(userid, guildid);
     }
     public List<User> getUsersFromGuildId(long guildid) {

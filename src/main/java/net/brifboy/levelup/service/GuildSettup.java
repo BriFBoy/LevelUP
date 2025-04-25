@@ -42,6 +42,8 @@ public class GuildSettup extends ListenerAdapter {
         if (guild != null) {
             userDBInteraction.deleteUsers(userDBInteraction.getUsersFromGuildId(guild.getGuildid()));
             guildDBInteractions.deleteGuild(guild);
+        } else {
+            logger.warn("Bot left guild without guild being in DB. Guild: {}", event.getGuild().getName());
         }
 
     }

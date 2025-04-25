@@ -27,19 +27,21 @@ public class UserGetXp extends ListenerAdapter {
             return;
         }
 
+        final String[] XP = event.getMessage().getContentRaw().split(" ");
         long userid = event.getAuthor().getIdLong();
         long guildid = event.getGuild().getIdLong();
-        User user = userDBInteraction.getUserFormIdAndGuildId(userid, guildid);
+        User user = userDBInteraction.getUserFormUserIdAndGuildId(userid, guildid);
 
         if (user != null) {
-            user.xp++;
-            user = claclulations.checkUserLevelUp(user);
+            user.addXp(claclulations, XP);
+            user.checkLevel(claclulations);
             userDBInteraction.saveUser(user);
 
         } else {
             Guild guild = guildDBInteractions.findById(event.getGuild().getIdLong());
-            userDBInteraction.saveUser(
-                    new User(userid, event.getAuthor().getName(), 0, 1, guild));
+            User NewUser = new User(userid, event.getAuthor().getName(), 0, XP.length, guild);
+            NewUser.checkLevel(claclulations);
+            userDBInteraction.saveUser(NewUser);
         }
     }
 
