@@ -20,9 +20,11 @@ public class Messaging {
     private UserClaclulations claclulations;
 
     public MessageCreateData levelUpMessage(User user, MessageChannel channel) {
-        String ping = "<@" + user.getUserid() + ">";
+        String ping = "<@" + user.getUserid() + ">"; // For pinging the user that leveled up
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle("You Level Up!").setColor(Color.cyan).addField("Level", String.valueOf(user.level), true);
+        embedBuilder.setTitle("You Level Up!").setColor(Color.cyan)
+                .addField("Level", String.valueOf(user.level), true)
+                .addField("Xp Until Next Level", String.valueOf(claclulations.getXptolevelup(user) - user.xp), true);
         MessageCreateBuilder messageCreateBuilder = new MessageCreateBuilder();
         messageCreateBuilder.addContent(ping).addEmbeds(embedBuilder.build());
         return messageCreateBuilder.build();

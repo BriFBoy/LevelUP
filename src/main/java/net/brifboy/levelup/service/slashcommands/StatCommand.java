@@ -31,15 +31,14 @@ public class StatCommand extends ListenerAdapter {
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         User user = userDBInteraction.getUserFormUserIdAndGuildId(event.getUser().getIdLong(), Objects.requireNonNull(event.getGuild()).getIdLong());
         Guild guild = guildDBInteractions.findById(event.getGuild().getIdLong());
-        if (user == null) {
+
+        if (user == null) { // if true will create a new user and save it
             user = new User(event.getUser().getIdLong(), event.getUser().getName(), 0, 0, guild);
             userDBInteraction.saveUser(user);
             logger.info("No user for command: levelstat, added user to DB");
         }
-
         if (event.getName().equals("levelstat")) {
-            event.replyEmbeds(messaging.statMessage(user, event.getChannel())).queue();
+            event.replyEmbeds(messaging.statMessage(user, event.getChannel())).setEphemeral(true).queue();
         }
-        logger.info("Interacted with slash command: levelstat");
     }
 }

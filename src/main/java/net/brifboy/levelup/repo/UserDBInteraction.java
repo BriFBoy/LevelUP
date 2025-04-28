@@ -1,6 +1,9 @@
 package net.brifboy.levelup.repo;
 
 import net.brifboy.levelup.model.User;
+import net.brifboy.levelup.service.UserClaclulations;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

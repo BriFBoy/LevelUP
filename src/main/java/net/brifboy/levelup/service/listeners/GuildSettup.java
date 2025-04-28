@@ -1,4 +1,4 @@
-package net.brifboy.levelup.service;
+package net.brifboy.levelup.service.listeners;
 
 import net.brifboy.levelup.model.Guild;
 import net.brifboy.levelup.repo.GuildDBInteractions;

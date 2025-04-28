@@ -19,7 +19,7 @@ public class User {
     @JoinColumn(name = "guildid")
     private Guild Guild;
 
-    public User(long userid, String username, int level, int xp, net.brifboy.levelup.model.Guild guild) {
+    public User(long userid, String username, int level, int xp, Guild guild) {
         this.userid = userid;
         this.username = username;
         this.level = level;
@@ -42,5 +42,9 @@ public class User {
 
     public String getUsername() {
         return username;
+    }
+
+    public Guild getGuild() {
+        return Guild;
     }
 }

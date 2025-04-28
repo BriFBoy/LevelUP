@@ -1,9 +1,11 @@
-package net.brifboy.levelup.service;
+package net.brifboy.levelup.service.listeners;
 
 import net.brifboy.levelup.model.Guild;
 import net.brifboy.levelup.model.User;
 import net.brifboy.levelup.repo.GuildDBInteractions;
 import net.brifboy.levelup.repo.UserDBInteraction;
+import net.brifboy.levelup.service.Messaging;
+import net.brifboy.levelup.service.UserClaclulations;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -43,12 +45,12 @@ public class UserGetXp extends ListenerAdapter {
         if (user != null) {
             user.addXp(claclulations, XP);
             if (user.checkLevel(claclulations)) {
-                messaging.levelUpMessage(user, event.getChannel());
+               event.getMessage().reply(messaging.levelUpMessage(user, event.getChannel())).queue(); // If user levels up it, then send message
+
             }
             userDBInteraction.saveUser(user);
-            logger.info("Updated user in DB, User: {}, {}", user.getUserid(), user.getUsername());
 
-        } else {
+        } else { // Adds user if there is no in DB
             Guild guild = guildDBInteractions.findById(event.getGuild().getIdLong());
             User NewUser = new User(userid, event.getAuthor().getName(), 0, XP.length, guild);
             NewUser.checkLevel(claclulations);
