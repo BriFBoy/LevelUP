@@ -15,13 +15,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class GuildSettup extends ListenerAdapter {
 
-    @Autowired
-    private GuildDBInteractions guildDBInteractions;
-    @Autowired
-    private UserDBInteraction userDBInteraction;
-
+    private final GuildDBInteractions guildDBInteractions;
+    private final UserDBInteraction userDBInteraction;
 
     private static final Logger logger = LoggerFactory.getLogger(GuildSettup.class);
+
+    public GuildSettup(GuildDBInteractions guildDBInteractions, UserDBInteraction userDBInteraction) {
+        this.guildDBInteractions = guildDBInteractions;
+        this.userDBInteraction = userDBInteraction;
+    }
+
     @Override
     public void onGuildJoin(@NotNull GuildJoinEvent event) {
 
@@ -30,7 +33,6 @@ public class GuildSettup extends ListenerAdapter {
 
         if (guildDB == null) {
             guildDBInteractions.saveGuild(guild);
-            logger.info("Saved Guild {}, {} to DB", guild.getGuildid(), guild.getName());
         } else {
             logger.warn("Guild {}, {}, was already in DB when joining", guild.getGuildid(), guild.getName());
         }
@@ -42,8 +44,6 @@ public class GuildSettup extends ListenerAdapter {
         if (guild != null) {
             userDBInteraction.deleteUsers(userDBInteraction.getUsersFromGuildId(guild.getGuildid()));
             guildDBInteractions.deleteGuild(guild);
-        } else {
-            logger.warn("Bot left guild without guild being in DB. Guild: {}", event.getGuild().getName());
         }
 
     }

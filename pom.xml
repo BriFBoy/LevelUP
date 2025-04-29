@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>net.brifboy</groupId>
 	<artifactId>levelup</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>LevelUP</name>
 	<description>A Discord bot that adds levels to you guild</description>
 	<url/>
