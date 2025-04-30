@@ -1,0 +1,33 @@
+
+services:
+  levelup:
+    container_name: levelup_bot
+    image: levelup
+    build: .
+    depends_on:
+      - database
+    networks:
+      - levelup
+    environment:
+      - DATASOURCE_USERNAME=${DATASOURCE_USERNAME}
+      - DATASOURCE_PASSWORD=${DATASOURCE_PASSWORD}
+      - DATASOURCE_URL=jdbc:postgresql://database/levelupdb
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+
+
+  database:
+    container_name: levelup_database
+    image: bitnami/postgresql:latest
+    environment:
+      - POSTGRES_USERNAME=${DATASOURCE_USERNAME}
+      - POSTGRES_PASSWORD=${DATASOURCE_PASSWORD}
+      - POSTGRESQL_DATABASE=levelupdb
+    networks:
+      - levelup
+    ports:
+      - "5000:5432"
+
+networks:
+  levelup:
+    driver: bridge
+
