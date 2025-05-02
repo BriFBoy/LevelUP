@@ -6,6 +6,7 @@ import net.brifboy.levelup.service.listeners.UserGetXp;
 import net.brifboy.levelup.service.slashcommands.StatCommand;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,6 +40,7 @@ public class LevelUPConfiguration {
                 .disableCache(CacheFlag.VOICE_STATE, CacheFlag.SCHEDULED_EVENTS)
                 .build();
         jda.awaitReady();
+        jda.upsertCommand(Commands.slash("levelstat", "View you level stat")).queue();
         return jda;
     }
     private static List<GatewayIntent> getGatewayIntent() {

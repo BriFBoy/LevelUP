@@ -5,7 +5,8 @@ services:
     image: levelup
     build: .
     depends_on:
-      - database
+      database:
+        condition: service_healthy
     networks:
       - levelup
     environment:
@@ -22,10 +23,15 @@ services:
       - POSTGRES_USERNAME=${DATASOURCE_USERNAME}
       - POSTGRES_PASSWORD=${DATASOURCE_PASSWORD}
       - POSTGRESQL_DATABASE=levelupdb
+    healthcheck:
+      test: ["CMD-shell", "pg_isready -U ${DATASOURCE_USERNAME} -d levelupdb"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
     networks:
       - levelup
     ports:
-      - "5000:5432"
+      - "5432:5432"
 
 networks:
   levelup:
