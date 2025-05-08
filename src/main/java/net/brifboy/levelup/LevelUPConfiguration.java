@@ -17,6 +17,7 @@ import java.util.List;
 
 @Configuration
 public class LevelUPConfiguration {
+
     @Value("${DISCORD_TOKEN}")
     private String DISCORDTOKEN;
     private final GuildSettup guildSettup;
@@ -33,7 +34,7 @@ public class LevelUPConfiguration {
 
     @Bean
     public JDA jda() throws InterruptedException {
-        JDA jda = JDABuilder.create(DISCORDTOKEN, getGatewayIntent())
+        JDA jda = JDABuilder.create(DISCORDTOKEN, getGatewayIntents())
                 .addEventListeners(guildSettup)
                 .addEventListeners(userGetXp)
                 .addEventListeners(statCommand)
@@ -43,12 +44,10 @@ public class LevelUPConfiguration {
         jda.upsertCommand(Commands.slash("levelstat", "View you level stat")).queue();
         return jda;
     }
-    private static List<GatewayIntent> getGatewayIntent() {
+    private static List<GatewayIntent> getGatewayIntents() {
         return List.of(
                 GatewayIntent.MESSAGE_CONTENT,
-                GatewayIntent.GUILD_MEMBERS,
                 GatewayIntent.GUILD_MESSAGES,
-                GatewayIntent.GUILD_PRESENCES,
                 GatewayIntent.GUILD_EXPRESSIONS
 
         );

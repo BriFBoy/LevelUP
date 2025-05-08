@@ -27,15 +27,17 @@ public class Messaging {
                 .addField("Xp Until Next Level", String.valueOf(claclulations.getXptolevelup(user) - user.xp), true);
         MessageCreateBuilder messageCreateBuilder = new MessageCreateBuilder();
         messageCreateBuilder.addContent(ping).addEmbeds(embedBuilder.build());
+
         return messageCreateBuilder.build();
     }
+
     public MessageEmbed statMessage(User user, MessageChannel channel) {
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("Stats").setColor(Color.cyan).addField("Level", String.valueOf(user.level), true)
                 .addField("Xp", String.valueOf(user.xp), true)
                 .addField("Xp Until Next Level", String.valueOf(claclulations.getXptolevelup(user) - user.xp), true);
-        return embedBuilder.build();
 
+        return embedBuilder.build();
     }
 }
