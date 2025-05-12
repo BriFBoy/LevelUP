@@ -9,11 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class LevelUpApplication {
 	public static JDA jda;
 
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) {
 		SpringApplication.run(LevelUpApplication.class, args);
-
-
-
 
 	}
 

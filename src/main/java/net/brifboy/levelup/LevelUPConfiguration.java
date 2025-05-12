@@ -23,13 +23,11 @@ public class LevelUPConfiguration {
     private final UserGetXp userGetXp;
     private final StatCommand statCommand;
 
-
     public LevelUPConfiguration(GuildSettup guildSettup, UserGetXp userGetXp, StatCommand statCommand) {
         this.guildSettup = guildSettup;
         this.userGetXp = userGetXp;
         this.statCommand = statCommand;
     }
-
 
     @Bean
     public JDA jda() throws InterruptedException {
@@ -43,14 +41,12 @@ public class LevelUPConfiguration {
         jda.upsertCommand(Commands.slash("levelstat", "View you level stat")).queue();
         return jda;
     }
+
     private static List<GatewayIntent> getGatewayIntent() {
         return List.of(
                 GatewayIntent.MESSAGE_CONTENT,
                 GatewayIntent.GUILD_MEMBERS,
-                GatewayIntent.GUILD_MESSAGES,
-                GatewayIntent.GUILD_PRESENCES,
-                GatewayIntent.GUILD_EXPRESSIONS
-
+                GatewayIntent.GUILD_MESSAGES
         );
     }
 

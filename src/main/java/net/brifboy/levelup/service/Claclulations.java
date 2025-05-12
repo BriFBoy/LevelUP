@@ -6,10 +6,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserClaclulations {
-    Logger logger = LoggerFactory.getLogger(UserClaclulations.class);
+public abstract class Claclulations {
+    private static Logger logger = LoggerFactory.getLogger(Claclulations.class);
 
-    public boolean checkUserLevelUp(User user) {
+    public static boolean checkUserLevelUp(User user) {
         try {
             final int XPTOLEVELUP = getXptolevelup(user);
             if (user.xp >= XPTOLEVELUP) {
@@ -18,21 +18,22 @@ public class UserClaclulations {
                 return true;
             }
         } catch (ClassCastException c) {
-            logger.info("Failed to cast XPTOLEVELUP to int");
+            logger.warn("Failed to cast XPTOLEVELUP to int");
         }
         return false;
+    }
+    public static int getXptolevelup(User user) {
+        return (int) (Math.pow(user.level, 1.6) + 25);
     }
 
 
 
-    public void addXp(User user, String[] XP) {
+    public static void addXp(User user, String[] XP) {
         user.xp += XP.length;
     }
 
     // Formula for calculating the xp needed to level up is:
     // XP to level up = levels^1.6 + 25
-    public int getXptolevelup(User user) {
-        return (int) (Math.pow(user.level, 1.6) + 25);
-    }
+
 
 }
