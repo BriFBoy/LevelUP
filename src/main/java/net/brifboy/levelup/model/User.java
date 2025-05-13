@@ -1,7 +1,7 @@
 package net.brifboy.levelup.model;
 
 import jakarta.persistence.*;
-import net.brifboy.levelup.service.UserClaclulations;
+import net.brifboy.levelup.service.Claclulations;
 
 @Entity(name = "Users")
 public class User {
@@ -29,13 +29,6 @@ public class User {
 
     public User() {}
 
-    public boolean checkLevel(UserClaclulations claclulations) {
-       return claclulations.checkUserLevelUp(this);
-    }
-    public void addXp(UserClaclulations claclulations, String[] words) {
-        claclulations.addXp(this, words);
-    }
-
     public long getUserid() {
         return userid;
     }
@@ -44,7 +37,4 @@ public class User {
         return username;
     }
 
-    public Guild getGuild() {
-        return Guild;
-    }
 }

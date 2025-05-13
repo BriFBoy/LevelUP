@@ -17,7 +17,6 @@ public class GuildSettup extends ListenerAdapter {
 
     private final GuildDBInteractions guildDBInteractions;
     private final UserDBInteraction userDBInteraction;
-
     private static final Logger logger = LoggerFactory.getLogger(GuildSettup.class);
 
     public GuildSettup(GuildDBInteractions guildDBInteractions, UserDBInteraction userDBInteraction) {
@@ -27,7 +26,6 @@ public class GuildSettup extends ListenerAdapter {
 
     @Override
     public void onGuildJoin(@NotNull GuildJoinEvent event) {
-
         Guild guild = new Guild(event.getGuild().getIdLong(), event.getGuild().getName());
         Guild guildDB = guildDBInteractions.findById(event.getGuild().getIdLong());
 
@@ -45,6 +43,7 @@ public class GuildSettup extends ListenerAdapter {
             userDBInteraction.deleteUsers(userDBInteraction.getUsersFromGuildId(guild.getGuildid()));
             guildDBInteractions.deleteGuild(guild);
         }
+        logger.info("Bot Left a Guild");
 
     }
 }
