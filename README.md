@@ -8,7 +8,8 @@ If you just want to add the bot to you Guild, you can simply paste this URL in y
 https://discord.com/oauth2/authorize?client_id=1365249526704771132
 ## Self Hosting the Bot
 
-To deploy this project you will need to install git and jdk-21. It install the needed tools you can run
+To deploy this project you will need to install git and jdk-21. This guide is many for Linux Debian, but it may work on other debian based distribution.
+To install the needed tools you can run
 
 ```bash
   sudo apt install git docker.io
@@ -19,12 +20,12 @@ Next you will need to clone the repository by running
  git clone https://github.com/BriFBoy/LevelUP
  cd LevelUP
 ```
-After cloning the repository you will need to build to jar and than running the docker-compose file.
+After cloning the repository you need to build to jar and than running the docker-compose file.
 
 ```bash
  ./mvnw package -Dmaven.test.skip
 ```
-After building the project to jar, make sure to change the env variables to your need.
+After building the project to jar, you can run the docker file. Make sure to CHANGE the env variables to your need.
 ```bash
  sudo docker-compose -d -e DATASOURCE_URL=your_jdbc_URL -e DATASOURCE_USERNAME=you_database_username -e DATASOURCE_PASSWORD=the_users_password -e DISCORD_TOKEN=you_discord_token
 ```
