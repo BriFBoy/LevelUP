@@ -16,16 +16,11 @@ public class UserDBInteraction {
     UserRepository userRepository;
 
     public void deleteUsers(List<User> users) {
-        if (!users.isEmpty()) {
-            userRepository.deleteAll(users);
-            logger.info("Deleted users from DB");
-        }
-
+        userRepository.deleteAll(users);
     }
 
     public void saveUser(User user) {
         userRepository.save(user);
-        logger.info("Saved or Updated user in DB");
     }
     public User getUserFormUserIdAndGuildId(long userid, long guildid) {
        return userRepository.getUserFromIdAndGuildId(userid, guildid);

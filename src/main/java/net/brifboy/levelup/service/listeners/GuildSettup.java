@@ -26,7 +26,7 @@ public class GuildSettup extends ListenerAdapter {
 
     @Override
     public void onGuildJoin(@NotNull GuildJoinEvent event) {
-        Guild guild = new Guild(event.getGuild().getIdLong(), event.getGuild().getName());
+        Guild guild = new Guild(event.getGuild().getIdLong(), event.getGuild().getName(), false);
         Guild guildDB = guildDBInteractions.findById(event.getGuild().getIdLong());
 
         if (guildDB == null) {

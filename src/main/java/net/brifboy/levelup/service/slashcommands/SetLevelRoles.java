@@ -3,6 +3,7 @@ package net.brifboy.levelup.service.slashcommands;
 import net.brifboy.levelup.LevelUPConfiguration;
 import net.brifboy.levelup.model.Guild;
 import net.brifboy.levelup.model.LevelRole;
+import net.brifboy.levelup.repo.GuildDBInteractions;
 import net.brifboy.levelup.repo.LevelRoleRepository;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
@@ -14,6 +15,8 @@ import net.dv8tion.jda.api.interactions.components.text.TextInput;
 import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +27,9 @@ public class SetLevelRoles extends ListenerAdapter {
 
     @Autowired
     private LevelRoleRepository levelRoleRepository;
+    @Autowired
+    private GuildDBInteractions guildDBInteractions;
+    private static final Logger logger = LoggerFactory.getLogger(SetLevelRoles.class);
 
     private static final String ROLE_MENU_ID = "rolemenu";
     private static final String ROLE_MODAL_ID = "role_modal";
@@ -49,14 +55,22 @@ public class SetLevelRoles extends ListenerAdapter {
     @Override
     public void onModalInteraction(@NotNull ModalInteractionEvent event) {
         if (event.getModalId().equals(ROLE_MODAL_ID)) {
-            String[] levellist = event.getValue(MODAL_TEXTINPUT_ID).getAsString().split(" ");
+            final long GUILD_ID = event.getGuild().getIdLong();
+            try {
+                String[] levellist = event.getValue(MODAL_TEXTINPUT_ID).getAsString().split(" ");
+                Guild guild = guildDBInteractions.findById(GUILD_ID);
+                guild.setLevelRoles(true);
+                guildDBInteractions.saveGuild(guild);
+                for (int i = 0; i < roleList.size(); i++) {
+                    addRoleToDB(roleList.get(i).getIdLong(),guild, Integer.parseInt(levellist[i]), roleList.get(i).getName());
+                }
+                event.reply("All done").setEphemeral(true).queue();
 
-            for (int i = 0; i < roleList.size(); i++) {
-                addRoleToDB(roleList.get(i).getIdLong(), new Guild(roleList.get(i).getGuild().getIdLong(), roleList.get(i).getGuild().getName()),
-                        Integer.parseInt(levellist[i]), roleList.get(i).getName());
+            } catch (Exception e) {
+                event.reply("Something want wrong. Please try again").setEphemeral(true).queue();
+                logger.error("{} Occurred! {}", e.getClass(), e.getMessage());
+                guildDBInteractions.saveGuild(new Guild(GUILD_ID, event.getGuild().getName(), false));
             }
-            event.reply("All done").setEphemeral(true).queue();
-
 
 
         }

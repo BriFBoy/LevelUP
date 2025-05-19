@@ -36,14 +36,14 @@ public class StatCommand extends ListenerAdapter {
             Guild guild = guildDBInteractions.findById(event.getGuild().getIdLong());
 
             if (guild == null) { // If guild Is null then save the guild and return
-                guild = new Guild(event.getGuild().getIdLong(), event.getGuild().getName());
+                guild = new Guild(event.getGuild().getIdLong(), event.getGuild().getName(), false);
                 logger.warn("No guild found In DB when interacting with stat command. Guild: {}, {}", guild.getGuildid(), guild.getName());
                 guildDBInteractions.saveGuild(guild);
                 event.reply("Your guild was not found. Please try again").setEphemeral(true).queue();
 
                 return;
             }  else if (user == null) { // if user is null then create a new user and save it
-                user = new User(event.getUser().getIdLong(), event.getUser().getName(), 0, 0, guild);
+                user = new User(event.getUser().getIdLong(), event.getUser().getName(), 0, 0, null, guild);
                 userDBInteraction.saveUser(user);
                 logger.info("No user for command: levelstat, added user to DB");
             }

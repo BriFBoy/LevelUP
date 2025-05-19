@@ -2,7 +2,7 @@ package net.brifboy.levelup;
 
 
 import net.brifboy.levelup.service.listeners.GuildSettup;
-import net.brifboy.levelup.service.listeners.UserGetXp;
+import net.brifboy.levelup.service.listeners.UserMessageing;
 import net.brifboy.levelup.service.slashcommands.SetLevelRoles;
 import net.brifboy.levelup.service.slashcommands.StatCommand;
 import net.dv8tion.jda.api.JDA;
@@ -25,13 +25,13 @@ public class LevelUPConfiguration {
     @Value("${DISCORD_TOKEN}")
     private String DISCORDTOKEN;
     private final GuildSettup guildSettup;
-    private final UserGetXp userGetXp;
+    private final UserMessageing userMessageing;
     private final StatCommand statCommand;
     private final SetLevelRoles setLevelRoles;
 
-    public LevelUPConfiguration(GuildSettup guildSettup, UserGetXp userGetXp, StatCommand statCommand, SetLevelRoles setLevelRoles) {
+    public LevelUPConfiguration(GuildSettup guildSettup, UserMessageing userMessageing, StatCommand statCommand, SetLevelRoles setLevelRoles) {
         this.guildSettup = guildSettup;
-        this.userGetXp = userGetXp;
+        this.userMessageing = userMessageing;
         this.statCommand = statCommand;
         this.setLevelRoles = setLevelRoles;
     }
@@ -40,7 +40,7 @@ public class LevelUPConfiguration {
     public JDA jda() throws InterruptedException {
         JDA jda = JDABuilder.create(DISCORDTOKEN, getGatewayIntent())
                 .addEventListeners(guildSettup)
-                .addEventListeners(userGetXp)
+                .addEventListeners(userMessageing)
                 .addEventListeners(statCommand)
                 .addEventListeners(setLevelRoles)
                 .disableCache(CacheFlag.ACTIVITY, CacheFlag.EMOJI, CacheFlag.STICKER, CacheFlag.CLIENT_STATUS,

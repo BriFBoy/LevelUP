@@ -12,7 +12,7 @@ public class LevelRole {
     private int id;
     private  long roleid;
     @ManyToOne
-    @JoinColumn(nullable = false, name = "guildid")
+    @JoinColumn(name = "guildid")
     private Guild guild;
     private int getatlevel;
     private String name;
@@ -26,5 +26,9 @@ public class LevelRole {
     }
 
     public LevelRole() {
+    }
+
+    public long getRoleid() {
+        return roleid;
     }
 }
