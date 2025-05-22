@@ -43,8 +43,7 @@ public class LevelUPConfiguration {
                 .addEventListeners(userMessageing)
                 .addEventListeners(statCommand)
                 .addEventListeners(setLevelRoles)
-                .disableCache(CacheFlag.ACTIVITY, CacheFlag.EMOJI, CacheFlag.STICKER, CacheFlag.CLIENT_STATUS,
-                        CacheFlag.ONLINE_STATUS, CacheFlag.VOICE_STATE, CacheFlag.SCHEDULED_EVENTS)
+                .disableCache(getCacheFlags())
                 .build();
         jda.awaitReady();
         jda.updateCommands().addCommands(Commands.slash(STATCOMMAND_ID, "View you level stat"),
@@ -52,12 +51,22 @@ public class LevelUPConfiguration {
         return jda;
     }
 
-    private static List<GatewayIntent> getGatewayIntent() {
+    private List<GatewayIntent> getGatewayIntent() {
         return List.of(
                 GatewayIntent.MESSAGE_CONTENT,
                 GatewayIntent.GUILD_MEMBERS,
                 GatewayIntent.GUILD_MESSAGES
         );
+    }
+    private List<CacheFlag> getCacheFlags() {
+        return List.of(
+                CacheFlag.ACTIVITY,
+                CacheFlag.EMOJI,
+                CacheFlag.STICKER,
+                CacheFlag.CLIENT_STATUS,
+                CacheFlag.ONLINE_STATUS,
+                CacheFlag.VOICE_STATE,
+                CacheFlag.SCHEDULED_EVENTS);
     }
 
 }
