@@ -33,12 +33,14 @@ public class ScoreboardCommand extends ListenerAdapter {
     private MessageEmbed getScoreEmbed(int top) {
         List<User> users = userDBInteraction.getUsersWithHighestLevel(top);
         EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("ScoreBoard");
+        eb.setTitle("***ScoreBoard***");
         eb.setColor(Color.orange);
         String board = "**";
+
         for (int i = 0; i < users.size(); i++) {
             board += (i + 1) + ".    " + users.get(i).getUsername() + ", Level: " + users.get(i).level + " \n ";
         }
+
         board += "**";
         eb.setDescription(board);
 
