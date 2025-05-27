@@ -33,4 +33,8 @@ public class UserDBInteraction {
     public List<User> getUsersFromGuildId(long guildid) {
         return userRepository.getUsersByGuildId(guildid);
     }
+
+    public List<User> getUsersWithHighestLevel(int top) {
+        return userRepository.getUsersWithHighestLevel(top);
+    }
 }

@@ -29,7 +29,7 @@ public class Messaging {
     public MessageEmbed statMessage(User user, MessageChannel channel) {
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle("Stats").setColor(Color.cyan).addField("Level", String.valueOf(user.level), true)
+        embedBuilder.setTitle("Stats").setColor(Color.yellow).addField("Level", String.valueOf(user.level), true)
                 .addField("Xp", String.valueOf(user.xp), true)
                 .addField("Xp Until Next Level", String.valueOf(Claclulations.getXptolevelup(user) - user.xp), true);
         return embedBuilder.build();
