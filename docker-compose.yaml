@@ -1,8 +1,7 @@
-
 services:
   levelup:
     container_name: levelup_bot
-    image: levelup
+    image: brifboy/levelup
     build: .
     depends_on:
       database:
@@ -18,13 +17,13 @@ services:
 
   database:
     container_name: levelup_database
-    image: bitnami/postgresql:latest
+    image: postgres:17.5
     environment:
-      - POSTGRES_USERNAME=${DATASOURCE_USERNAME}
+      - POSTGRES_USER=${DATASOURCE_USERNAME}
       - POSTGRES_PASSWORD=${DATASOURCE_PASSWORD}
-      - POSTGRESQL_DATABASE=levelupdb
+      - POSTGRES_DB=levelupdb
     healthcheck:
-      test: ["CMD-shell", "pg_isready -U ${DATASOURCE_USERNAME} -d levelupdb"]
+      test: ["CMD-SHELL", "pg_isready -d levelupdb"]
       interval: 5s
       timeout: 10s
       retries: 5
@@ -36,4 +35,3 @@ services:
 networks:
   levelup:
     driver: bridge
-
