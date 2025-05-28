@@ -2,7 +2,7 @@ package net.brifboy.levelup.service.slashcommands;
 
 import net.brifboy.levelup.LevelUPConfiguration;
 import net.brifboy.levelup.model.User;
-import net.brifboy.levelup.repo.UserDBInteraction;
+import net.brifboy.levelup.repo.UserRepository;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 public class ScoreboardCommand extends ListenerAdapter {
     @Autowired
-    private UserDBInteraction userDBInteraction;
+    private UserRepository userRepository;
 
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
@@ -31,19 +31,19 @@ public class ScoreboardCommand extends ListenerAdapter {
     }
 
     private MessageEmbed getScoreEmbed(int top, long guildid) {
-        List<User> users = userDBInteraction.getUsersWithHighestLevel(top, guildid);
+        List<User> users = userRepository.getUsersWithHighestLevel(top, guildid);
+
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle("***ScoreBoard***");
         eb.setColor(Color.orange);
-        String board = "**";
 
+        String board = "**";
         for (int i = 0; i < users.size(); i++) {
             board += (i + 1) + ".    " + users.get(i).getUsername() + ", Level: " + users.get(i).level + " \n ";
         }
-
         board += "**";
-        eb.setDescription(board);
 
+        eb.setDescription(board);
         return eb.build();
     }
 }

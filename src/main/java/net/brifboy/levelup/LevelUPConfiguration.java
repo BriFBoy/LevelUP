@@ -2,7 +2,7 @@ package net.brifboy.levelup;
 
 
 import net.brifboy.levelup.service.listeners.GuildSettup;
-import net.brifboy.levelup.service.listeners.UserGetXp;
+import net.brifboy.levelup.service.listeners.UserMessaging;
 import net.brifboy.levelup.service.slashcommands.ScoreboardCommand;
 import net.brifboy.levelup.service.slashcommands.StatCommand;
 import net.dv8tion.jda.api.JDA;
@@ -22,16 +22,16 @@ public class LevelUPConfiguration {
     @Value("${DISCORD_TOKEN}")
     private String DISCORDTOKEN;
     private final GuildSettup guildSettup;
-    private final UserGetXp userGetXp;
+    private final UserMessaging userMessaging;
     private final StatCommand statCommand;
     private final ScoreboardCommand scoreboardCommand;
     public static final String LEVELSTAT_COMMAND = "levelstat";
     public static final String SCOREBOARD_COMMAND = "scoreboard";
     public static final String SCOREBOARD_OPTION_GUILD = "guild";
 
-    public LevelUPConfiguration(GuildSettup guildSettup, UserGetXp userGetXp, StatCommand statCommand, ScoreboardCommand scoreboardCommand) {
+    public LevelUPConfiguration(GuildSettup guildSettup, UserMessaging userMessaging, StatCommand statCommand, ScoreboardCommand scoreboardCommand) {
         this.guildSettup = guildSettup;
-        this.userGetXp = userGetXp;
+        this.userMessaging = userMessaging;
         this.statCommand = statCommand;
         this.scoreboardCommand = scoreboardCommand;
     }
@@ -40,10 +40,10 @@ public class LevelUPConfiguration {
     public JDA jda() throws InterruptedException {
         JDA jda = JDABuilder.create(DISCORDTOKEN, getGatewayIntent())
                 .addEventListeners(guildSettup)
-                .addEventListeners(userGetXp)
+                .addEventListeners(userMessaging)
                 .addEventListeners(statCommand)
                 .addEventListeners(scoreboardCommand)
-                .disableCache(CacheFlag.VOICE_STATE, CacheFlag.SCHEDULED_EVENTS)
+                .disableCache(getCacheFlags())
                 .build();
         jda.awaitReady();
         jda.updateCommands().addCommands(Commands.slash(LEVELSTAT_COMMAND, "View you level stat"),
@@ -59,5 +59,15 @@ public class LevelUPConfiguration {
                 GatewayIntent.GUILD_MESSAGES
         );
     }
-
+    private List<CacheFlag> getCacheFlags() {
+        return  List.of(
+                CacheFlag.STICKER,
+                CacheFlag.ONLINE_STATUS,
+                CacheFlag.CLIENT_STATUS,
+                CacheFlag.EMOJI,
+                CacheFlag.ACTIVITY,
+                CacheFlag.VOICE_STATE,
+                CacheFlag.SCHEDULED_EVENTS
+        );
+    }
 }
