@@ -23,15 +23,15 @@ public class ScoreboardCommand extends ListenerAdapter {
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         if (event.getName().equals(LevelUPConfiguration.SCOREBOARD_COMMAND)) {
             switch (event.getSubcommandName()) {
-                case LevelUPConfiguration.SCOREBOARD_OPTION_GUILD -> event.replyEmbeds(getScoreEmbed(5)).setEphemeral(true).queue();
+                case LevelUPConfiguration.SCOREBOARD_OPTION_GUILD -> event.replyEmbeds(getScoreEmbed(5, event.getGuild().getIdLong())).setEphemeral(true).queue();
                 default -> {}
             }
         }
 
     }
 
-    private MessageEmbed getScoreEmbed(int top) {
-        List<User> users = userDBInteraction.getUsersWithHighestLevel(top);
+    private MessageEmbed getScoreEmbed(int top, long guildid) {
+        List<User> users = userDBInteraction.getUsersWithHighestLevel(top, guildid);
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle("***ScoreBoard***");
         eb.setColor(Color.orange);

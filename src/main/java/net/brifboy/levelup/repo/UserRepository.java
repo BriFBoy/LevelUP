@@ -15,6 +15,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "SELECT * FROM users WHERE userid = :u AND guildid = :g", nativeQuery = true)
     User getUserFromIdAndGuildId(@Param("u") long userid, @Param("g") long guildid);
 
-    @Query(value = "SELECT * FROM users ORDER BY level DESC LIMIT :t", nativeQuery = true)
-    List<User> getUsersWithHighestLevel(@Param("t") int top);
+    @Query(value = "SELECT * FROM users WHERE guildid = :g ORDER BY level DESC LIMIT :t", nativeQuery = true)
+    List<User> getUsersWithHighestLevel(@Param("t") int top, @Param("g") long guildid);
 }
