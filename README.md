@@ -19,8 +19,18 @@ Next you will need to clone the repository by running
  git clone https://github.com/BriFBoy/LevelUP
  cd LevelUP
 ```
-After cloning the repository you can now just run the docker-compose file. Make sure to CHANGE the env variables to your need.
+After cloning the repository you will have to create a environment variable file. This can be done With our favorite text editor.
 ```bash
- sudo docker-compose run -d -e DATASOURCE_USERNAME=you_database_username -e DATASOURCE_PASSWORD=the_users_password -e DISCORD_TOKEN=you_discord_token levelup
+ nvim .env
+```
+Write this into the file you just created. Make sure to CHANGE the environment variable to you need. 
+```bash
+DATASOURCE_USERNAME=you_database_username 
+DATASOURCE_PASSWORD=the_users_password 
+DISCORD_TOKEN=you_discord_token
+```
+Finally, you can now run the docker compose file and the bot should be up and running after the bot is built and packaged. 
+```bash
+ sudo docker-compose run -d levelup
 ```
 Now you should have a working bot running in a docker container.

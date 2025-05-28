@@ -22,6 +22,8 @@ public abstract class Claclulations {
         }
         return false;
     }
+    // Formula for calculating the xp needed to level up is:
+    // XP to level up = levels^1.6 + 25
     public static int getXptolevelup(User user) {
         return (int) (Math.pow(user.level, 1.6) + 25);
     }
@@ -32,8 +34,7 @@ public abstract class Claclulations {
         user.xp += XP.length;
     }
 
-    // Formula for calculating the xp needed to level up is:
-    // XP to level up = levels^1.6 + 25
+
 
 
 }
